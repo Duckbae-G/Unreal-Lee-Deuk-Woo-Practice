@@ -2,7 +2,7 @@
 
 #include "ABCharacter.h"
 #include "ABAnimInstance.h"
-//#include "ABWeapon.h"
+#include "ABWeapon.h"
 #include "DrawDebugHelpers.h"
 
 // Sets default values
@@ -30,7 +30,7 @@ AABCharacter::AABCharacter()
 	}
 	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	//애니메이션 블루프린트 검색 후 적용
-	static ConstructorHelpers::FClassFinder<UAnimInstance> WARRIOR_ANIM(TEXT("/Game/Book/Animations/WarriorAnimBluePrint.WarriorAnimBluePrint_C"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance> WARRIOR_ANIM(TEXT("/Game/Book/Animations/WarriorAnimBlueprint.WarriorAnimBlueprint_C"));
 	if (WARRIOR_ANIM.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(WARRIOR_ANIM.Class);
@@ -45,7 +45,8 @@ AABCharacter::AABCharacter()
 
 	//점프값 변경
 	GetCharacterMovement()->JumpZVelocity = 800.0f;
-
+	
+	//Attack 관련 기본설정
 	IsAttacking = false;
 	MaxCombo = 4;
 	AttackEndComboState();
@@ -57,20 +58,20 @@ AABCharacter::AABCharacter()
 	AttackRange = 200.0f;
 	AttackRadius = 50.0f;
 
-	////Weapon 스켈레탈 메쉬를 오른손 소켓에 지정
-	//FName WeaponSocket(TEXT("hand_rSocket"));
-	//auto CurWeapon = GetWorld()->SpawnActor<AABWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
-	//if (nullptr != CurWeapon)
-	//{
-	//	CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-	//}
+	
 }
 
 // Called when the game starts or when spawned
 void AABCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	//Weapon 스켈레탈 메쉬를 오른손 소켓에 지정
+	FName WeaponSocket(TEXT("hand_rSocket"));
+	auto CurWeapon = GetWorld()->SpawnActor<AABWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+	if (nullptr != CurWeapon)
+	{
+		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+	}
 }
 
 
@@ -179,6 +180,7 @@ void AABCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	//공격버튼 입력 받아옴
 	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AABCharacter::Attack);
+	PlayerInputComponent->BindAction(TEXT("Attack2"), EInputEvent::IE_Pressed, this, &AABCharacter::Attack2);
 
 	//플레이어 인풋 입력 받아옴(상하좌우, 시야회전)
 	PlayerInputComponent->BindAxis(TEXT("UpDown"), this, &AABCharacter::UpDown);
@@ -258,7 +260,9 @@ void AABCharacter::ViewChange()
 //공격 함수 구현
 void AABCharacter::Attack()
 {
-	/*auto AnimInstance = Cast<UABAnimInstance>(GetMesh()->GetAnimInstance());
+	//애님몽타주 섹션별 재생으로 인해 주석처리
+	/*ABLOG_S(Warning);
+	auto AnimInstance = Cast<UABAnimInstance>(GetMesh()->GetAnimInstance());
 	if (IsAttacking) return;
 
 	ABAnim->PlayAttackMontage();
@@ -267,6 +271,7 @@ void AABCharacter::Attack()
 	if (IsAttacking)
 	{
 		ABCHECK(FMath::IsWithinInclusive<int32>(CurrentCombo, 1, MaxCombo));
+		ABLOG_S(Warning);
 		if (CanNextCombo)
 		{
 			IsComboInputOn = true;
@@ -286,12 +291,15 @@ void AABCharacter::Attack()
 void AABCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	ABCHECK(IsAttacking);
-	IsAttacking = false;
 	ABCHECK(CurrentCombo > 0);
+	IsAttacking = false;
 	AttackEndComboState();
 }
 
-
+void AABCharacter::Attack2()
+{
+	ABLOG_S(Warning);
+}
 
 //콤보 시작과 끝 함수 구현
 
@@ -306,7 +314,7 @@ void AABCharacter::AttackStartComboState()
 
 void AABCharacter::AttackEndComboState()
 {
-	IsComboInputOn = true;
+	IsComboInputOn = false;
 	CanNextCombo = false;
 	CurrentCombo = 0;
 }

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ABAnimInstance.h"
 
@@ -7,8 +7,8 @@ UABAnimInstance::UABAnimInstance()
 	CurrentPawnSpeed = 0.0f;
 	IsInAir = false;
 	IsDead = false;
-	//Attack ¾Ö´Ô ¸ùÅ¸ÁÖ °æ·Î ¹Ì¸® ¹Ş¾Æ¿À±â
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONTAGE(TEXT("/Game/Book/Animations/Warrior_Attack_AnimMontage.Warrior_Attack_AnimMontage"));
+	//Attack ì• ë‹˜ ëª½íƒ€ì£¼ ê²½ë¡œ ë¯¸ë¦¬ ë°›ì•„ì˜¤ê¸°
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONTAGE(TEXT("/Game/Book/Animations/AB_Warrior_Attack_AnimMontage.AB_Warrior_Attack_AnimMontage"));
 	if (ATTACK_MONTAGE.Succeeded())
 	{
 		AttackMontage = ATTACK_MONTAGE.Object;
@@ -49,7 +49,7 @@ void UABAnimInstance::JumpToAttackMontageSection(int32 NewSection)
 	Montage_JumpToSection(GetAttackMontageSectionName(NewSection), AttackMontage);
 }
 
-//µ¨¸®ÄÉÀÌÆ®¿¡ µî·ÏµÈ ÇÔ¼ö È£ÃâÇÔ
+//ë¸ë¦¬ì¼€ì´íŠ¸ì— ë“±ë¡ëœ í•¨ìˆ˜ í˜¸ì¶œí•¨
 void UABAnimInstance::AnimNotify_AttackHitCheck()
 {
 	OnAttackHitCheck.Broadcast();

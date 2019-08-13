@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ABGameMode.h"
 #include "ABCharacter.h"
@@ -6,9 +6,9 @@
 
 AABGameMode::AABGameMode()
 {
-	DefaultPawnClass = AABCharacter::StaticClass(); // ¸ÖÆ¼ÇÃ·¹ÀÌ °í·ÁÇÏ¿© ÆùÀ» ¹Ì¸® ¸¸µé¾îµÎÁö ¾Ê°í ±×¶§±×¶§ Ã¼Å©ÇØ¼­ »ı¼ºÇÏµµ·Ï ÀÛ¼º
+	DefaultPawnClass = AABCharacter::StaticClass(); // ë©€í‹°í”Œë ˆì´ ê³ ë ¤í•˜ì—¬ í°ì„ ë¯¸ë¦¬ ë§Œë“¤ì–´ë‘ì§€ ì•Šê³  ê·¸ë•Œê·¸ë•Œ ì²´í¬í•´ì„œ ìƒì„±í•˜ë„ë¡ ì‘ì„±
 	PlayerControllerClass = AABPlayerController::StaticClass();
-	//ºí·çÇÁ¸°Æ®·Î Á¦ÀÛµÈ ¸¶³×Å· Æù ÁöÁ¤ÇÏ´Â ÄÚµå
+	//ë¸”ë£¨í”„ë¦°íŠ¸ë¡œ ì œì‘ëœ ë§ˆë„¤í‚¹ í° ì§€ì •í•˜ëŠ” ì½”ë“œ
 	/*static ConstructorHelpers::FClassFinder<APawn> BP_PAWN_C(TEXT("/Game/ThirdPersonCPP/Blueprints/ThirdPersonCharacter.ThirdPersonCharacter_C"));
 	if (BP_PAWN_C.Succeeded())
 	{
@@ -18,7 +18,7 @@ AABGameMode::AABGameMode()
 
 void AABGameMode::PostLogin(APlayerController * NewPlayer)
 {
-	//PostLogin¶§ ¹ß»ıµÇ´Â ÀÏµé ¾Ë±âÀ§ÇÑ ·Î±× ÄÚµå
+	//PostLoginë•Œ ë°œìƒë˜ëŠ” ì¼ë“¤ ì•Œê¸°ìœ„í•œ ë¡œê·¸ ì½”ë“œ
 	ABLOG(Warning, TEXT("PostLogin Begin"));
 	Super::PostLogin(NewPlayer);
 	ABLOG(Warning, TEXT("PostLogin ENd"));

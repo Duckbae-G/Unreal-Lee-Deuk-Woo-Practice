@@ -74,7 +74,7 @@ private:
 
 	//공격 함수 정의
 	void Attack();
-
+	void Attack2();
 	//Attack 애님몽타주 끝났는지 아닌지 체크하는 함수, 델리케이트 선언
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);

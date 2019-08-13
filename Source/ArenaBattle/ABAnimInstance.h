@@ -19,7 +19,7 @@ class ARENABATTLE_API UABAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 
 
-	public:
+public:
 	UABAnimInstance();
 
 	//현재 애님인스턴스에서 폰 정보 얻어오기 forward declare
