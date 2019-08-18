@@ -61,9 +61,26 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	UCameraComponent* Camera;
 
+	
+
+	//무기장착 관련 함수 전방 선언
+	bool CanSetWeapon();
+	void SetWeapon(class AABWeapon* NewWeapon);
+
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	class AABWeapon* CurrentWeapon;
+
+	//Stat Data 관련 클래스 선언
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+	class UABCharacterStatComponent* CharacterStat;
+
+	// HPBar UI
+	UPROPERTY(VisibleAnywhere, Category = UI)
+	class UWidgetComponent* HPBarWidget;
+
 private:
 
-	//움직임과 시야전환 위한 변수 선언
+	//움직임과 시야전환 위한 함수 선언
 	void UpDown(float NewAxisValue);
 	void LeftRight(float NewAxisValue);
 	void LookUp(float NewAxisValue);
@@ -74,7 +91,7 @@ private:
 
 	//공격 함수 정의
 	void Attack();
-	void Attack2();
+	
 	//Attack 애님몽타주 끝났는지 아닌지 체크하는 함수, 델리케이트 선언
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
@@ -114,4 +131,6 @@ private:
 	//애님인스턴스를 멤버 변수로 전방 선언하기
 	UPROPERTY()
 	class UABAnimInstance* ABAnim;
+
+	
 };
