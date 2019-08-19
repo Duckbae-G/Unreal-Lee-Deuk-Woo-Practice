@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ABCharacterStatComponent.h"
 #include "ABGameInstance.h"
@@ -13,7 +13,7 @@ UABCharacterStatComponent::UABCharacterStatComponent()
 	
 	bWantsInitializeComponent = true;
 
-	Level = 10;
+	Level = 1;
 	// ...
 }
 
@@ -62,7 +62,7 @@ void UABCharacterStatComponent::SetNewLevel(int32 NewLevel)
 void UABCharacterStatComponent::SetDamage(float NewDamage)
 {
 	ABCHECK(nullptr != CurrentStatData);
-	//SETHPÇÔ¼öÀÇ µîÀåÀ¸·Î ÁÖ¼®Ã³¸®
+	//SETHPí•¨ìˆ˜ì˜ ë“±ì¥ìœ¼ë¡œ ì£¼ì„ì²˜ë¦¬
 	/*CurrentHP = FMath::Clamp<float>(CurrentHP - NewDamage, 0.0f, CurrentStatData->MaxHP);
 	if (CurrentHP <= 0.0f)
 	{
