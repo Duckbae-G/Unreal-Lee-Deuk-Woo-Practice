@@ -17,6 +17,11 @@ public:
 	// Sets default values for this character's properties
 	AABCharacter();
 
+	//캐릭터스테이트 타입 변수 선언
+	void SetCharacterState(ECharacterState NewState);
+	ECharacterState GetCharacterState() const;
+	int32 GetExp() const;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -111,7 +116,22 @@ private:
 	
 	void OnAssetLoadCompleted();
 
-private:
+	//캐릭터스테이트 관련 에셋인덱스 설정
+	int32 AssetIndex = 0;
+	//FStringAssetReference CharacterAssetToLoad;
+
+	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
+	ECharacterState CurrentState;
+
+	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
+	bool bIsPlayer;
+
+	UPROPERTY()
+	class AABAIController * ABAIController;
+
+	UPROPERTY()
+	class AABPlayerController * ABPlayerController;
+	
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
 	bool IsAttacking;
 
@@ -144,4 +164,10 @@ private:
 	FSoftObjectPath CharacterAssetToLoad = FSoftObjectPath(nullptr);
 	TSharedPtr<struct FStreamableHandle> AssetStreamingHandle;
 
+	//죽었을때 
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = State, Meta = (AllowPrivateAccess = true))
+	float DeadTimer;
+
+	FTimerHandle DeadTimerHandle = {};
 };

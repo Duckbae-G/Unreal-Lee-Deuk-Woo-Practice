@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ABSection.generated.h"
 
+
 UCLASS()
 class ARENABATTLE_API AABSection : public AActor
 {
@@ -26,6 +27,9 @@ public:
 
 private:
 	void OnNPCSpawn();
+
+	UFUNCTION()
+	void OnKeyNPCDestroyed(AActor* DestroyedActor);
 
 	UPROPERTY(EditAnywhere, Category = Spawn, Meta = (AllowPrivateAccess = true))
 	float EnemySpawnTime;
