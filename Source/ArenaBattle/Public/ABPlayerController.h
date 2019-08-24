@@ -23,6 +23,8 @@ public:
 	class UABHUDWidget* GetHUDWidget() const;
 	void NPCKill(class AABCharacter* KilledNPC) const;
 	void AddGameScore() const;
+	void ChangeInputMode(bool bGameMode = true);
+	void ShowResultUI();
 
 protected:
 	//virtual void SetupInputComponent() override;
@@ -30,12 +32,28 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
 	TSubclassOf<class UABHUDWidget> HUDWidgetClass;
+
+	virtual void SetupInputComponent() override;
 	
-	//좌우입력 하이잭 해보는 예제용. 입력은 보통 폰에서 구현하나, 엔진에서는 컨트롤러를 거쳐서 폰으로 간다.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UABGameplayWidget> MenuWidgetClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UABGameplayResultWidget> ResultWidgetClass;
+
 private:
 	//	void LeftRight(float NewAxisValue);
 	UPROPERTY()
 	class UABHUDWidget* HUDWidget;
 	UPROPERTY()
 	class AABPlayerState* ABPlayerState;
+	UPROPERTY()
+	class UABGameplayWidget* MenuWidget;
+
+	FInputModeGameOnly GameInputMode;
+	FInputModeUIOnly UIInputMode;
+	void OnGamePause();
+
+	UPROPERTY()
+	class UABGameplayResultWidget* ResultWidget;
 };

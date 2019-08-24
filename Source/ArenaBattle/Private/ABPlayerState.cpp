@@ -2,12 +2,23 @@
 
 #include "ABPlayerState.h"
 #include "ABGameInstance.h"
+#include "ABCharacter.h"
+#include "ABSaveGame.h"
+#include "ABCharacterStatComponent.h"
 
 AABPlayerState::AABPlayerState()
 {
 	CharacterLevel = 1;
 	GameScore = 0;
+	GameHighScore = 0;
 	Exp = 0;
+	SaveSlotName = TEXT("Player1");
+	CharacterIndex = 0;
+}
+
+int32 AABPlayerState::GetGameHighScore() const
+{
+	return GameHighScore;
 }
 
 int32 AABPlayerState::GetGameScore() const
@@ -22,10 +33,18 @@ int32 AABPlayerState::GetCharacterLevel() const
 
 void AABPlayerState::InitPlayerData()
 {
-	SetPlayerName(TEXT("Antis"));
-	SetCharacterLevel(5);
+	auto ABSaveGame = Cast<UABSaveGame>(UGameplayStatics::LoadGameFromSlot(SaveSlotName, 0));
+	if (nullptr == ABSaveGame)
+	{
+		ABSaveGame = GetMutableDefault<UABSaveGame>();
+	}
+	SetPlayerName(ABSaveGame->PlayerName);
+	SetCharacterLevel(ABSaveGame->Level);
 	GameScore = 0;
-	Exp = 0;
+	GameHighScore = ABSaveGame->HighScore;
+	Exp = ABSaveGame->Exp;
+	CharacterIndex = ABSaveGame->CharacterIndex;
+	SavePlayerData();
 }
 
 float AABPlayerState::GetExpRatio() const
@@ -51,9 +70,11 @@ bool AABPlayerState::AddExp(int32 IncomeExp)
 		Exp -= CurrentStatData->NextExp;
 		SetCharacterLevel(CharacterLevel + 1);
 		DidLevelUp = true;
+		
 	}
 	
 	OnPlayerStateChanged.Broadcast();
+	SavePlayerData();
 	return DidLevelUp;
 }
 
@@ -65,11 +86,39 @@ void AABPlayerState::SetCharacterLevel(int32 NewCharacterLevel)
 	CurrentStatData = ABGameInstance->GetABCharacterData(NewCharacterLevel);
 	ABCHECK(nullptr != CurrentStatData);
 
-	CharacterLevel = NewCharacterLevel;
+	CharacterLevel = NewCharacterLevel;	
+	
+	
 }
 
 void AABPlayerState::AddGameScore()
 {
 	GameScore++;
+	if (GameScore >= GameHighScore)
+	{
+		GameHighScore = GameScore;
+	}
 	OnPlayerStateChanged.Broadcast();
+	
+	SavePlayerData();
+}
+
+void AABPlayerState::SavePlayerData()
+{
+	UABSaveGame* NewPlayerData = NewObject<UABSaveGame>();
+	NewPlayerData->PlayerName = GetPlayerName();
+	NewPlayerData->Level = CharacterLevel;
+	NewPlayerData->Exp = Exp;
+	NewPlayerData->HighScore = GameHighScore;
+	NewPlayerData->CharacterIndex = CharacterIndex;
+
+	if (!UGameplayStatics::SaveGameToSlot(NewPlayerData, SaveSlotName, 0))
+	{
+		ABLOG(Error, TEXT("SaveGame Error!"));
+	}
+}
+
+int32 AABPlayerState::GetCharacterIndex() const
+{
+	return CharacterIndex;
 }

@@ -26,8 +26,10 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	
+	UFUNCTION()
 	void SetNewLevel(int32 NewLevel);
+
 	void SetDamage(float NewDamage);
 	void SetHP(float NewHP);
 	float GetHPRatio();

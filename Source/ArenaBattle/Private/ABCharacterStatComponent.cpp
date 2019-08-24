@@ -2,6 +2,7 @@
 
 #include "ABCharacterStatComponent.h"
 #include "ABGameInstance.h"
+#include "ABPlayerState.h"
 
 
 // Sets default values for this component's properties
@@ -47,6 +48,7 @@ void UABCharacterStatComponent::SetNewLevel(int32 NewLevel)
 	auto ABGameInstance = Cast<UABGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	
 	ABCHECK(nullptr != ABGameInstance);
+	
 	CurrentStatData = ABGameInstance->GetABCharacterData(NewLevel);
 	if (nullptr != CurrentStatData)
 	{
